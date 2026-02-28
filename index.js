@@ -54,20 +54,20 @@ function copyPubgId() {
 }
 
 // Open platform links
-// Open platform links
 function openPlatform(platform) {
     const urls = {
         youtube: 'https://www.youtube.com/@Mustafa_Kamal_Emaira', 
         instagram: 'https://www.instagram.com/mustafakamal246800/',
         tiktok: 'https://www.tiktok.com/@mustafakamal246800?_t=ZS-8xFRdhq4chG&_r=1', 
         facebook: 'https://www.facebook.com/mustafakamal246800?rdid=8StY4GVvYpDz3maT&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2F12FmDgHQY1d%2F#',
-        whatsapp: 'https://whatsapp.com/channel/0029Vb7AwgzFSAszFDwYm51J' // رابط قناتك اللي بعته
+        whatsapp: 'https://whatsapp.com/channel/0029Vb7AwgzFSAszFDwYm51J'
     };
 
     if (urls[platform]) {
         window.open(urls[platform], '_blank');
     }
 }
+
 // Enhanced scroll animations
 function handleScrollAnimations() {
     const sections = document.querySelectorAll('.section-animate');
@@ -228,5 +228,3 @@ function createParticles(e) {
         };
     }
 }
-
-

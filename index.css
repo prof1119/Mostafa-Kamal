@@ -702,10 +702,7 @@ body {
 .notification.show {
     opacity: 1;
     transform: translateY(0);
-
 }
-
-
 
 /* لون الأيقونة والخلفية المتدرجة للواتساب */
 .whatsapp-icon {
@@ -723,11 +720,3 @@ body {
 .platform-card:nth-child(5) {
     animation-delay: 0.5s;
 }
-
-
-
-
-
-
-
-
