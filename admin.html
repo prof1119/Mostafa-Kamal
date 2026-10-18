@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>لوحة التحكم — مصطفى كمال إميرة</title>
+<style>
+:root{--bg:#070a10;--card:rgba(255,255,255,.06);--line:rgba(255,255,255,.1);--g:#00ff88;--b:#0099ff;--txt:#f2f5fa;--mut:#a3acbd;--r:16px;--red:#ff4444}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:system-ui,"Segoe UI","Noto Sans Arabic",Arial,sans-serif;background:var(--bg);color:var(--txt);min-height:100vh;
+  background-image:radial-gradient(50vmax 50vmax at 0 0,rgba(0,255,136,.12),transparent 60%),radial-gradient(50vmax 50vmax at 100% 100%,rgba(0,153,255,.12),transparent 60%)}
+/* header */
+header{background:rgba(10,12,20,.95);border-bottom:1px solid var(--line);padding:1rem 1.5rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;backdrop-filter:blur(14px)}
+header h1{font-size:1.15rem;color:var(--g)}
+header span{color:var(--mut);font-size:.85rem}
+/* layout */
+.page{max-width:900px;margin:0 auto;padding:1.5rem 1rem 4rem}
+/* section card */
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:1.4rem;margin-bottom:1.2rem}
+.card-head{display:flex;align-items:center;gap:.6rem;margin-bottom:1.1rem;cursor:pointer;user-select:none}
+.card-head h2{font-size:1.05rem;flex:1}
+.card-head .arr{font-size:.85rem;color:var(--mut);transition:transform .25s}
+.card.closed .arr{transform:rotate(180deg)}
+.card-body{display:grid;gap:.8rem}
+.card.closed .card-body{display:none}
+/* fields */
+label{display:block;font-size:.8rem;color:var(--mut);margin-bottom:.3rem;letter-spacing:.04em}
+input,textarea,select{width:100%;background:rgba(255,255,255,.05);border:1px solid var(--line);border-radius:10px;padding:.7rem .85rem;
+  color:var(--txt);font:inherit;font-size:.92rem;transition:border-color .2s;direction:ltr}
+input:focus,textarea:focus,select:focus{outline:none;border-color:var(--g)}
+textarea{resize:vertical;min-height:80px}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:.8rem}
+/* bullets list editor */
+.blist{display:grid;gap:.55rem}
+.brow{display:flex;gap:.5rem;align-items:center}
+.brow input{flex:1}
+.brow .del{width:32px;height:32px;flex-shrink:0;background:rgba(255,68,68,.12);border:1px solid rgba(255,68,68,.25);border-radius:8px;color:var(--red);cursor:pointer;font-size:1rem;display:grid;place-items:center}
+.brow .del:hover{background:rgba(255,68,68,.25)}
+.add-btn{background:rgba(0,255,136,.08);border:1px dashed rgba(0,255,136,.3);border-radius:10px;color:var(--g);padding:.55rem;width:100%;cursor:pointer;font:inherit;font-size:.85rem;transition:background .2s}
+.add-btn:hover{background:rgba(0,255,136,.15)}
+/* platform rows */
+.prow{background:rgba(255,255,255,.035);border:1px solid var(--line);border-radius:12px;padding:1rem;display:grid;gap:.6rem}
+.prow-head{display:flex;align-items:center;gap:.6rem;font-weight:600}
+.prow-head .dot{width:10px;height:10px;border-radius:50%}
+.tog{display:flex;align-items:center;gap:.5rem;font-size:.85rem;color:var(--mut);cursor:pointer}
+.tog input{width:auto;cursor:pointer;accent-color:var(--g)}
+/* actions */
+.actions{position:sticky;bottom:0;background:rgba(7,10,16,.96);border-top:1px solid var(--line);padding:1rem 1.5rem;display:flex;gap:.8rem;align-items:center;backdrop-filter:blur(12px)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;border:0;cursor:pointer;font:600 .95rem inherit;
+  padding:.8rem 1.4rem;border-radius:999px;text-decoration:none;color:#fff;transition:transform .15s,box-shadow .15s}
+.btn:active{transform:scale(.96)}
+.btn-save{background:linear-gradient(120deg,var(--g),var(--b));color:#02120b;box-shadow:0 6px 20px rgba(0,255,136,.25)}
+.btn-load{background:var(--card);border:1px solid var(--line);color:var(--txt)}
+.btn-preview{background:rgba(255,255,255,.07);border:1px solid var(--line);color:var(--txt)}
+/* toast */
+#toast{position:fixed;top:70px;left:50%;transform:translate(-50%,-14px);background:var(--g);color:#02120b;font-weight:700;
+  padding:.65rem 1.3rem;border-radius:14px;opacity:0;pointer-events:none;transition:.3s;z-index:9999;white-space:nowrap}
+#toast.show{opacity:1;transform:translate(-50%,0)}
+/* notice */
+.notice{background:rgba(255,193,7,.08);border:1px solid rgba(255,193,7,.25);border-radius:12px;padding:.9rem 1rem;font-size:.83rem;color:#ffd966;margin-bottom:1.2rem;line-height:1.65}
+.notice strong{display:block;margin-bottom:.3rem;font-size:.88rem}
+/* platform colors */
+.yt-dot{background:#ff0000}.tk-dot{background:#ffffff}.ig-dot{background:#e1306c}.fb-dot{background:#1877f2}.wa-dot{background:#25d366}
+/* section badge */
+.badge{font-size:.72rem;background:rgba(0,255,136,.12);color:var(--g);border:1px solid rgba(0,255,136,.2);border-radius:999px;padding:.2rem .65rem}
+</style>
+</head>
+<body>
+<header>
+  <h1>🎛 لوحة التحكم</h1>
+  <span id="filepath-hint">افتح الملف data.json بجوار index.html</span>
+</header>
+<div id="toast"></div>
+
+<div class="page">
+  <div class="notice">
+    <strong>⚠️ تعليمات الاستخدام</strong>
+    ١. اضغط "تحميل data.json" واختار ملف data.json الموجود في نفس مجلد موقعك.<br>
+    ٢. عدّل اللي عايزه.<br>
+    ٣. اضغط "💾 حفظ وتنزيل" — هيتنزّل ملف data.json جديد.<br>
+    ٤. ارفع الملف الجديد ده على GitHub بدل القديم (نفس الاسم بالظبط: data.json).
+  </div>
+
+  <!-- Hero -->
+  <div class="card" id="sec-hero">
+    <div class="card-head" onclick="toggle('sec-hero')">
+      <span>🏠</span><h2>البطل الرئيسي (Hero)</h2><span class="badge">Hero</span><span class="arr">▲</span>
+    </div>
+    <div class="card-body">
+      <div class="row2">
+        <div><label>الاسم</label><input id="h-name" value="Mostafa Kamal Emaira"></div>
+        <div><label>تحية البداية</label><input id="h-greeting" value="Hey, I'm"></div>
+      </div>
+      <div><label>Badge (النص الصغير فوق)</label><input id="h-badge" value="Content Creator since 2017"></div>
+      <div><label>السطر التعريفي (Lead)</label><textarea id="h-lead">YouTube creator making reaction videos, funny clips and viral moments — 100% halal, made to bring a little joy to your day.</textarea></div>
+      <div><label>رابط صورة البطل (أو اسم الملف مثل mustfa.JPG)</label><input id="h-photo" value="mustfa.JPG"></div>
+    </div>
+  </div>
+
+  <!-- Stats -->
+  <div class="card" id="sec-stats">
+    <div class="card-head" onclick="toggle('sec-stats')">
+      <span>📊</span><h2>الإحصائيات</h2><span class="badge">Stats</span><span class="arr">▲</span>
+    </div>
+    <div class="card-body" id="stats-rows"></div>
+  </div>
+
+  <!-- About -->
+  <div class="card" id="sec-about">
+    <div class="card-head" onclick="toggle('sec-about')">
+      <span>👤</span><h2>قسم عني (About)</h2><span class="badge">About</span><span class="arr">▲</span>
+    </div>
+    <div class="card-body">
+      <div class="row2">
+        <div><label>عنوان الجزء الأول</label><input id="a-t1" value="Entertainment with"></div>
+        <div><label>عنوان الجزء الثاني (بالتدرج)</label><input id="a-t2" value="values"></div>
+      </div>
+      <div><label>النص</label><textarea id="a-text">Hey everyone! I'm Mostafa Kamal Emaira, a digital content creator on YouTube. I create reaction videos to all kinds of trending and entertaining content from across the internet — from funny clips to viral moments. My goal is to keep you entertained, make you laugh, and bring a little joy to your day.</textarea></div>
+      <div><label>رابط صورة القسم</label><input id="a-photo" value="mustfa1.jpg"></div>
+    </div>
+  </div>
+
+  <!-- Mission -->
+  <div class="card" id="sec-mission">
+    <div class="card-head" onclick="toggle('sec-mission')">
+      <span>🎯</span><h2>المهمة (Mission)</h2><span class="badge">Mission</span><span class="arr">▲</span>
+    </div>
+    <div class="card-body">
+      <div id="mission-list" class="blist"></div>
+      <button class="add-btn" onclick="addBullet('mission-list')">+ إضافة نقطة</button>
+    </div>
+  </div>
+
+  <!-- Experience -->
+  <div class="card" id="sec-exp">
+    <div class="card-head" onclick="toggle('sec-exp')">
+      <span>🚀</span><h2>الخبرة (Experience)</h2><span class="badge">Experience</span><span class="arr">▲</span>
+    </div>
+    <div class="card-body">
+      <div id="exp-list" class="blist"></div>
+      <button class="add-btn" onclick="addBullet('exp-list')">+ إضافة نقطة</button>
+    </div>
+  </div>
+
+  <!-- PUBG -->
+  <div class="card" id="sec-pubg">
+    <div class="card-head" onclick="toggle('sec-pubg')">
+      <span>🎮</span><h2>PUBG ID</h2><span class="badge">PUBG</span><span class="arr">▲</span>
+    </div>
+    <div class="card-body">
+      <div><label>رقم PUBG</label><input id="pubg-id" value="51541024974" placeholder="رقم الـ PUBG"></div>
+    </div>
+  </div>
+
+  <!-- Platforms -->
+  <div class="card" id="sec-pl">
+    <div class="card-head" onclick="toggle('sec-pl')">
+      <span>🔗</span><h2>المنصات (Platforms)</h2><span class="badge">Platforms</span><span class="arr">▲</span>
+    </div>
+    <div class="card-body" id="pl-rows"></div>
+  </div>
+</div>
+
+<!-- Sticky actions -->
+<div class="actions">
+  <input type="file" id="file-in" accept=".json" style="display:none" onchange="loadFile(this)">
+  <button class="btn btn-load" onclick="document.getElementById('file-in').click()">📂 تحميل data.json</button>
+  <button class="btn btn-preview" onclick="window.open('index.html','_blank')">👁 معاينة</button>
+  <button class="btn btn-save" onclick="save()">💾 حفظ وتنزيل</button>
+</div>
+
+<script>
+var PLATS=[
+  {type:'youtube',  label:'YouTube',   dot:'yt-dot'},
+  {type:'tiktok',   label:'TikTok',    dot:'tk-dot'},
+  {type:'instagram',label:'Instagram', dot:'ig-dot'},
+  {type:'facebook', label:'Facebook',  dot:'fb-dot'},
+  {type:'whatsapp', label:'WhatsApp',  dot:'wa-dot'}
+];
+var DEFAULT={
+  hero:{badge:'Content Creator since 2017',greeting:"Hey, I'm",name:'Mostafa Kamal Emaira',
+    lead:"YouTube creator making reaction videos, funny clips and viral moments — 100% halal, made to bring a little joy to your day.",photo:'mustfa.JPG'},
+  stats:[{value:'24K+',label:'Followers'},{value:'9+',label:'Years'},{value:'5',label:'Platforms'}],
+  about:{title1:'Entertainment with',title2:'values',photo:'mustfa1.jpg',
+    text:"Hey everyone! I'm Mostafa Kamal Emaira, a digital content creator on YouTube. I create reaction videos to all kinds of trending and entertaining content from across the internet — from funny clips to viral moments. My goal is to keep you entertained, make you laugh, and bring a little joy to your day."},
+  mission:['Create 100% halal content and reach one million followers.','Inspire positive change through meaningful and ethical media.','Build a community rooted in values, creativity, and impact.'],
+  experience:['Experience since 2017 on various social media sites.','Specialized in content creation, audience growth, and trend adaptation.','Built and managed pages with consistent engagement and meaningful impact.'],
+  pubg:{id:'51541024974'},
+  platforms:[
+    {type:'youtube',  name:'YouTube',  sub:'7.58K+ Subscribers',url:'https://www.youtube.com/@Mustafa_Kamal_Emaira',show:true},
+    {type:'tiktok',   name:'TikTok',   sub:'11.5K+ Followers',  url:'https://www.tiktok.com/@mustafakamal246800',show:true},
+    {type:'instagram',name:'Instagram',sub:'600+ Followers',    url:'https://www.instagram.com/mustafakamal246800/',show:true},
+    {type:'facebook', name:'Facebook', sub:'4.3K+ Followers',   url:'https://www.facebook.com/mustafakamal246800?rdid=8StY4GVvYpDz3maT&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2F12FmDgHQY1d%2F#',show:true},
+    {type:'whatsapp', name:'WhatsApp', sub:'Latest Updates',    url:'https://whatsapp.com/channel/0029Vb7AwgzFSAszFDwYm51J',show:true}
+  ]
+};
+
+function g(id){return document.getElementById(id)}
+function v(id){return g(id)?g(id).value.trim():''}
+
+/* toggle sections */
+function toggle(id){var c=g(id);c.classList.toggle('closed')}
+
+/* bullet list helpers */
+function addBullet(listId,val){
+  var li=document.createElement('div');li.className='brow';
+  li.innerHTML='<input type="text" value="'+esc(val||'')+'"><button class="del" title="حذف" onclick="this.parentNode.remove()">✕</button>';
+  g(listId).appendChild(li);
+}
+function getBullets(listId){
+  return Array.from(g(listId).querySelectorAll('input')).map(function(i){return i.value.trim()}).filter(Boolean);
+}
+function fillBullets(listId,arr){g(listId).innerHTML='';arr.forEach(function(t){addBullet(listId,t)})}
+
+/* stats rows */
+function buildStatsRows(stats){
+  var el=g('stats-rows');el.innerHTML='';
+  stats.forEach(function(s,i){
+    var row=document.createElement('div');row.className='row2';row.style.gridTemplateColumns='1fr 2fr';
+    row.innerHTML='<div><label>القيمة '+(i+1)+'</label><input class="sv" data-i="'+i+'" value="'+esc(s.value)+'"></div>'
+                 +'<div><label>التسمية</label><input class="sl" data-i="'+i+'" value="'+esc(s.label)+'"></div>';
+    el.appendChild(row);
+  });
+}
+function getStats(){
+  var sv=Array.from(document.querySelectorAll('.sv')),sl=Array.from(document.querySelectorAll('.sl'));
+  return sv.map(function(_,i){return{value:sv[i].value.trim(),label:sl[i].value.trim()}}).filter(function(s){return s.value||s.label});
+}
+
+/* platform rows */
+function buildPlatforms(platforms){
+  var el=g('pl-rows');el.innerHTML='';
+  platforms.forEach(function(p){
+    var meta=PLATS.find(function(x){return x.type===p.type})||{label:p.type,dot:''};
+    var row=document.createElement('div');row.className='prow';
+    row.setAttribute('data-type',p.type);
+    row.innerHTML='<div class="prow-head"><span class="dot '+meta.dot+'"></span>'+meta.label+'</div>'
+      +'<label class="tog"><input type="checkbox" data-field="show"'+(p.show!==false?' checked':'')+'> ظاهر في الموقع</label>'
+      +'<div><label>الاسم المعروض</label><input data-field="name" value="'+esc(p.name||meta.label)+'"></div>'
+      +'<div><label>نص تحت الاسم (عدد المتابعين أو وصف)</label><input data-field="sub" value="'+esc(p.sub||'')+'"></div>'
+      +'<div><label>الرابط</label><input data-field="url" value="'+esc(p.url||'')+'"></div>';
+    el.appendChild(row);
+  });
+}
+function getPlatforms(){
+  return Array.from(g('pl-rows').querySelectorAll('[data-type]')).map(function(row){
+    var f=function(k){var el=row.querySelector('[data-field="'+k+'"]');return el?(el.type==='checkbox'?el.checked:el.value.trim()):''};
+    return{type:row.dataset.type,name:f('name'),sub:f('sub'),url:f('url'),show:f('show')};
+  });
+}
+
+function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+
+/* load data.json file */
+function loadFile(input){
+  var file=input.files[0];if(!file)return;
+  var reader=new FileReader();
+  reader.onload=function(e){
+    try{
+      var d=JSON.parse(e.target.result);
+      applyData(d);
+      showToast('✅ تم تحميل data.json');
+    }catch(err){showToast('❌ الملف مش JSON صح',true)}
+  };
+  reader.readAsText(file);
+}
+function applyData(d){
+  var h=d.hero||{};
+  if(h.name!==undefined)g('h-name').value=h.name;
+  if(h.greeting!==undefined)g('h-greeting').value=h.greeting;
+  if(h.badge!==undefined)g('h-badge').value=h.badge;
+  if(h.lead!==undefined)g('h-lead').value=h.lead;
+  if(h.photo!==undefined)g('h-photo').value=h.photo;
+  buildStatsRows(d.stats||DEFAULT.stats);
+  var a=d.about||{};
+  if(a.title1!==undefined)g('a-t1').value=a.title1;
+  if(a.title2!==undefined)g('a-t2').value=a.title2;
+  if(a.text!==undefined)g('a-text').value=a.text;
+  if(a.photo!==undefined)g('a-photo').value=a.photo;
+  fillBullets('mission-list',d.mission||DEFAULT.mission);
+  fillBullets('exp-list',d.experience||DEFAULT.experience);
+  if(d.pubg&&d.pubg.id!==undefined)g('pubg-id').value=d.pubg.id;
+  buildPlatforms(d.platforms&&d.platforms.length?d.platforms:DEFAULT.platforms);
+}
+
+/* build data object from form */
+function collect(){
+  return{
+    hero:{badge:v('h-badge'),greeting:v('h-greeting'),name:v('h-name'),lead:g('h-lead').value.trim(),photo:v('h-photo')},
+    stats:getStats(),
+    about:{title1:v('a-t1'),title2:v('a-t2'),text:g('a-text').value.trim(),photo:v('a-photo')},
+    mission:getBullets('mission-list'),
+    experience:getBullets('exp-list'),
+    pubg:{id:v('pubg-id')},
+    platforms:getPlatforms()
+  };
+}
+
+/* save → download */
+function save(){
+  var d=collect();
+  var blob=new Blob([JSON.stringify(d,null,2)],{type:'application/json'});
+  var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='data.json';a.click();
+  setTimeout(function(){URL.revokeObjectURL(a.href)},5000);
+  showToast('💾 تم التنزيل — ارفعه على GitHub');
+}
+
+/* toast */
+function showToast(msg,err){
+  var t=g('toast');t.textContent=msg;
+  t.style.background=err?'#ff4444':'var(--g)';
+  t.style.color=err?'#fff':'#02120b';
+  t.classList.add('show');clearTimeout(t._t);
+  t._t=setTimeout(function(){t.classList.remove('show')},2800);
+}
+
+/* init with defaults */
+applyData(DEFAULT);
+</script>
+</body>
+</html>

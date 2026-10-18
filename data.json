@@ -1,0 +1,40 @@
+{
+  "hero": {
+    "badge": "Content Creator since 2017",
+    "greeting": "Hey, I'm",
+    "name": "Mostafa Kamal Emaira",
+    "lead": "YouTube creator making reaction videos, funny clips and viral moments — 100% halal, made to bring a little joy to your day.",
+    "photo": "mustfa.JPG"
+  },
+  "stats": [
+    { "value": "24K+", "label": "Followers" },
+    { "value": "9+",   "label": "Years" },
+    { "value": "5",    "label": "Platforms" }
+  ],
+  "about": {
+    "title1": "Entertainment with",
+    "title2": "values",
+    "text": "Hey everyone! I'm Mostafa Kamal Emaira, a digital content creator on YouTube. I create reaction videos to all kinds of trending and entertaining content from across the internet — from funny clips to viral moments. My goal is to keep you entertained, make you laugh, and bring a little joy to your day.",
+    "photo": "mustfa1.jpg"
+  },
+  "mission": [
+    "Create 100% halal content and reach one million followers.",
+    "Inspire positive change through meaningful and ethical media.",
+    "Build a community rooted in values, creativity, and impact."
+  ],
+  "experience": [
+    "Experience since 2017 on various social media sites.",
+    "Specialized in content creation, audience growth, and trend adaptation.",
+    "Built and managed pages with consistent engagement and meaningful impact."
+  ],
+  "pubg": {
+    "id": "51541024974"
+  },
+  "platforms": [
+    { "type": "youtube",   "name": "YouTube",   "sub": "7.58K+ Subscribers", "url": "https://www.youtube.com/@Mustafa_Kamal_Emaira",        "show": true },
+    { "type": "tiktok",   "name": "TikTok",    "sub": "11.5K+ Followers",   "url": "https://www.tiktok.com/@mustafakamal246800",            "show": true },
+    { "type": "instagram","name": "Instagram", "sub": "600+ Followers",     "url": "https://www.instagram.com/mustafakamal246800/",          "show": true },
+    { "type": "facebook", "name": "Facebook",  "sub": "4.3K+ Followers",    "url": "https://www.facebook.com/mustafakamal246800?rdid=8StY4GVvYpDz3maT&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2F12FmDgHQY1d%2F#", "show": true },
+    { "type": "whatsapp", "name": "WhatsApp",  "sub": "Latest Updates",     "url": "https://whatsapp.com/channel/0029Vb7AwgzFSAszFDwYm51J", "show": true }
+  ]
+}
