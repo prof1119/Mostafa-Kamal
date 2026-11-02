@@ -43,21 +43,21 @@
     {
       "type": "youtube",
       "name": "YouTube",
-      "sub": "8.15K+ Subscribers",
+      "sub": "8.1K+ Subscribers",
       "url": "https://www.youtube.com/@Mustafa_Kamal_Emaira",
       "show": true
     },
     {
       "type": "tiktok",
       "name": "TikTok",
-      "sub": "11.5K+ Followers",
+      "sub": "10K+ Followers",
       "url": "https://www.tiktok.com/@mustafakamal246800",
       "show": true
     },
     {
       "type": "instagram",
       "name": "Instagram",
-      "sub": "600+ Followers",
+      "sub": "500+ Followers",
       "url": "https://www.instagram.com/mustafakamal246800/",
       "show": true
     },
@@ -66,12 +66,12 @@
       "name": "Facebook",
       "sub": "4.3K+ Followers",
       "url": "https://www.facebook.com/mustafakamal246800?rdid=8StY4GVvYpDz3maT&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2F12FmDgHQY1d%2F#",
-      "show": true
+      "show": false
     },
     {
       "type": "whatsapp",
-      "name": "WhatsApp",
-      "sub": "Latest Updates",
+      "name": "WhatsApp Channel",
+      "sub": "100+ Followers",
       "url": "https://whatsapp.com/channel/0029Vb7AwgzFSAszFDwYm51J",
       "show": true
     }
